@@ -1,0 +1,6 @@
+# RP2040 firmware build output
+firmware/rp2040/build/
+
+# Editor / OS cruft
+.DS_Store
+Thumbs.db

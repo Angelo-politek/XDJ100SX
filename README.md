@@ -3,6 +3,11 @@ An Open Source Standalone DJ Deck
 
 This project is another experimental project that combines hardware, MIDI and open source software to convert an old Pioneer CDJ-100S to a standalone player using all modern features.
 
+> **This branch (`rp2040-mod`)** is a personal fork that replaces the Teensy LC
+> with an RP2040 (non-destructive front-panel tap instead of rewired
+> switches) and expands on the original build. See
+> [`docs/rp2040-mod/00-roadmap.md`](docs/rp2040-mod/00-roadmap.md) for the plan.
+
 
 ![XDJ100SX](images/XDJ100SX-1.jpg)
 
