@@ -53,9 +53,9 @@ static const uint8_t kMatrixRowPins[MATRIX_ROWS] = { 7, 9, 8 };
 #define ADC_CH_PITCH_ADIN 0
 #define ADC_CH_PITCH_CT   1
 
-// Fader travel, measured on the reference deck (see docs/rp2040-mod/02-wiring.md).
-// The panel runs on 3.3 V and the fader spans almost the whole ADC range:
-// D613 on the schematic is a clamp, not in series with the wiper.
+// Fader travel, measured on deck 1 (see docs/rp2040-mod/02-wiring.md section 9). The panel
+// runs on 3.3 V and the fader spans almost the whole ADC range: D613 on the
+// schematic is a clamp, not in series with the wiper.
 #define PITCH_ADC_MIN 43
 #define PITCH_ADC_MAX 4037
 
@@ -76,17 +76,21 @@ static const uint8_t kMatrixRowPins[MATRIX_ROWS] = { 7, 9, 8 };
 #define PITCH_END_DEADZONE 25
 
 // --- MIDI ------------------------------------------------------------------
-// Quadrature steps per MIDI message. A mechanical encoder produces four steps
-// per detent, so 4 means one message per click, matching the original Teensy
-// firmware. Lowering the jog value to 1 quadruples its resolution but diverges
-// from the upstream mapping's feel.
 // Hysteresis on the pitch value actually sent, in 14-bit units. One ADC count
 // is about 4 units, and the ADC dithers by a count even when the fader is
 // still: without this the deck streams a CC on every update forever. 12 units
 // is under 0.1 % of fader travel, far below what the fader resolves.
 #define PITCH_MIDI_HYSTERESIS 12
 
-#define JOG_STEPS_PER_MIDI_TICK    4
+// Quadrature steps per MIDI message. A mechanical encoder produces four steps
+// per detent, so 4 would mean one message per click, like the Teensy build.
+//
+// The jog sends 1: every quadrature step becomes a message, 96 per revolution,
+// the finest the encoder can give. That resolution is what makes scratching
+// usable — 24 messages per revolution is 15 degrees per step, far too coarse.
+// The mapping script scales it back down for pitch bend, so sensitivity is
+// decided per mode instead of being fixed here.
+#define JOG_STEPS_PER_MIDI_TICK    1
 #define BROWSE_STEPS_PER_MIDI_TICK 4
 
 // Which indicator shows the beat and which the end of track. Changeable at
